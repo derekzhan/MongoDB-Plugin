@@ -103,7 +103,7 @@ public class MongoQuery {
         return this;
     }
     public MongoQuery byId(String id){
-        query.add(new Document("_id", new ObjectId("5710a81ab73a87092e17a02b")));
+        query.add(new Document("_id", new ObjectId(id)));
         return this;
     }
 
@@ -125,12 +125,28 @@ public class MongoQuery {
     }
 
     public List<JSONObject> find(Bson sort){
-        return MongoKit.find(collectionName,Filters.and((Iterable) query),sort);
+        Bson bson = null;
+        if(!query.isEmpty()){
+            bson = Filters.and((Iterable) query);
+        }
+        return MongoKit.find(collectionName,bson,sort);
     }
 
 
     public List<JSONObject> find(Bson sort,int limit){
-        return MongoKit.find(collectionName,Filters.and((Iterable) query),sort,limit);
+        Bson bson = null;
+        if(!query.isEmpty()){
+            bson = Filters.and((Iterable) query);
+        }
+        return MongoKit.find(collectionName,bson,sort,limit);
+    }
+
+    public List<JSONObject> find(Bson sort,int skip, int limit){
+        Bson bson = null;
+        if(!query.isEmpty()){
+            bson = Filters.and((Iterable) query);
+        }
+        return MongoKit.findPage(collectionName,bson,sort, skip ,limit);
     }
 
 

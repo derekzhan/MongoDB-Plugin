@@ -2,6 +2,8 @@
 
 import com.cybermkd.kit.MongoQuery;
 import com.cybermkd.plugin.MongoJFinalPlugin;
+import com.mongodb.BasicDBObject;
+import org.bson.conversions.Bson;
 import org.junit.Test;
 
 /**
@@ -23,7 +25,7 @@ public class MongodbTest {
 
         init();
         MongoQuery query=new MongoQuery();
-        System.out.println(query.use("item").set("test", "test").save());
+        System.out.println(query.use("item").set("a", "1").set("b","This is a mongodb insert single one record.").save());
 
     }
 
@@ -32,8 +34,11 @@ public class MongodbTest {
 
         init();
         MongoQuery query=new MongoQuery();
-        query.use("item").add(new MongoQuery().set("a", "1").set("b", "1"))
+        query.use("item")
+                .add(new MongoQuery().set("a", "1").set("b", "1"))
                 .add(new MongoQuery().set("a", "1").set("b", "3"))
+                .add(new MongoQuery().set("a", "2").set("b", "2"))
+                .add(new MongoQuery().set("a", "2").set("b", "3"))
                 .saveList();
 
     }
@@ -42,7 +47,7 @@ public class MongodbTest {
     public void testFindById(){
         init();
         MongoQuery query=new MongoQuery();
-        System.out.println(query.use("item").byId("5710a81ab73a87092e17a02b").find());
+        System.out.println(query.use("item").byId("5719867dd245e01250eb6ade").find());
     }
 
     @Test
@@ -70,21 +75,31 @@ public class MongodbTest {
     public void testUpdate(){
         init();
         MongoQuery query=new MongoQuery();
-        System.out.println(query.use("item").eq("a","1").modify("b","3").update());
+        System.out.println(query.use("item").eq("a","1").modify("b","wo wo ca").update());
     }
 
     @Test
     public void testUpById(){
         init();
         MongoQuery query=new MongoQuery();
-        System.out.println(query.use("item").byId("5710a81ab73a87092e17a02b").modify("b",4).update());
+        System.out.println(query.use("item").byId("57198840d245e04424f381d3").modify("b",4).update());
     }
 
     @Test
     public void testDel(){
         init();
         MongoQuery query=new MongoQuery();
-        System.out.println(query.use("item").eq("test","2").delete());
+        System.out.println(query.use("item").eq("b",4).delete());
+    }
+
+    @Test
+    public void testFindPage(){
+        init();
+        MongoQuery query = new MongoQuery();
+        Bson bson = new BasicDBObject("b",1);
+        System.out.println(query.use("item").find(bson));
+        System.out.println(query.use("item").find(bson,3));
+        System.out.println(query.use("item").find(bson,1,3));
     }
 }
 

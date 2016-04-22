@@ -94,7 +94,11 @@ public class MongoKit {
             }
         };
 
-        getCollection(collectionName).find(query).sort(sort).forEach(block);
+        if(query == null){
+            getCollection(collectionName).find().sort(sort).forEach(block);
+        }else{
+            getCollection(collectionName).find(query).sort(sort).forEach(block);
+        }
 
         return list;
 
@@ -113,11 +117,37 @@ public class MongoKit {
             }
         };
 
-        getCollection(collectionName).find(query).sort(sort).limit(limit).forEach(block);
+        if(query == null){
+            getCollection(collectionName).find().sort(sort).limit(limit).forEach(block);
+        }else {
+            getCollection(collectionName).find(query).sort(sort).limit(limit).forEach(block);
+        }
 
         return list;
 
     }
+
+    public static List<JSONObject> findPage(String collectionName, Bson query, Bson sort,int skip, int limit) {
+
+        final List<JSONObject> list = new ArrayList<JSONObject>();
+
+        Block<Document> block = new Block<Document>() {
+
+            public void apply(final Document document) {
+                list.add(JSONObject.parseObject(document.toJson()));
+            }
+        };
+
+        if(query == null){
+            getCollection(collectionName).find().sort(sort).skip(skip).limit(limit).forEach(block);
+        }else {
+            getCollection(collectionName).find(query).sort(sort).skip(skip).limit(limit).forEach(block);
+        }
+
+        return list;
+
+    }
+
 
     public static long update(String collectionName, Bson queue,Bson data){
         UpdateResult updateResult = getCollection(collectionName).updateMany(queue,data);
