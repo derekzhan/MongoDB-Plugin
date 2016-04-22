@@ -1,8 +1,8 @@
-
-
+import com.cybermkd.kit.MongoKit;
 import com.cybermkd.kit.MongoQuery;
-import com.cybermkd.plugin.MongoJFinalPlugin;
 import com.mongodb.BasicDBObject;
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
 import org.bson.conversions.Bson;
 import org.junit.Test;
 
@@ -10,13 +10,19 @@ import org.junit.Test;
  * 创建人:T-baby
  * 创建日期: 16/4/15
  * 文件描述:
+ *
+ * 参考链接： http://gold.xitu.io/entry/57134d452e958a006913e78f
  */
 public class MongodbTest {
 
     public void init() {
 
-        MongoJFinalPlugin jFinalPlugin = new MongoJFinalPlugin("teemo", "localhost:27017");
-        jFinalPlugin.start();
+        //MongoJFinalPlugin jFinalPlugin = new MongoJFinalPlugin("teemo", "localhost:27017");
+        //jFinalPlugin.start();
+
+        MongoClientURI connectionString = new MongoClientURI("mongodb://localhost:27017");
+        MongoClient client = new MongoClient(connectionString);
+        MongoKit.init(client, "teemo");
 
     }
 

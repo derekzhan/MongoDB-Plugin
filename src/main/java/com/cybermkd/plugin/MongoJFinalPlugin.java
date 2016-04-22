@@ -36,7 +36,7 @@ public class MongoJFinalPlugin implements IPlugin {
         this.connectionString = new MongoClientURI(this.host);
         this.database=database;
     }
-    @Override
+
     public boolean start() {
 
         try {
@@ -49,7 +49,7 @@ public class MongoJFinalPlugin implements IPlugin {
         return true;
     }
 
-    @Override
+
     public boolean stop() {
         if (client != null) {
             client.close();
